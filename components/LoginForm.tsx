@@ -20,7 +20,7 @@ export default function LoginForm() {
 
     const { data } = await signIn(formValues);
 
-    if (data.tokenCreate.errors) {
+    if (data.tokenCreate.errors.length > 0) {
       setErrors(data.tokenCreate.errors.map((error) => error.message));
       setFormValues(DefaultValues);
     }

@@ -1,30 +1,21 @@
 "use client";
-import { Provider, cacheExchange, fetchExchange } from "urql";
+import { Client, Provider } from "urql";
 
-import { SaleorAuthProvider, useAuthChange, useSaleorAuthClient } from "@saleor/auth-sdk/react";
-import { useUrqlClient } from "@saleor/auth-sdk/react/urql";
-
-const SaleorURL = "https://demo.saleor.io/graphql/";
+import { SaleorAuthProvider, useAuthChange } from "@saleor/auth-sdk/react";
+import { saleorApiUrl, saleorAuthClient, makeUrqlClient } from "@/lib";
+import { useState } from "react";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  const useSaleorAuthClientProps = useSaleorAuthClient({
-    saleorApiUrl: SaleorURL,
-  });
-
-  const { urqlClient, reset, refetch } = useUrqlClient({
-    url: SaleorURL,
-    fetch: useSaleorAuthClientProps.saleorAuthClient.fetchWithAuth,
-    exchanges: [cacheExchange, fetchExchange],
-  });
+  const [urqlClient, setUrqlClient] = useState<Client>(makeUrqlClient());
 
   useAuthChange({
-    saleorApiUrl: SaleorURL,
-    onSignedOut: () => reset(),
-    onSignedIn: () => refetch(),
+    saleorApiUrl,
+    onSignedOut: () => setUrqlClient(makeUrqlClient()),
+    onSignedIn: () => setUrqlClient(makeUrqlClient()),
   });
 
   return (
-    <SaleorAuthProvider {...useSaleorAuthClientProps}>
+    <SaleorAuthProvider client={saleorAuthClient}>
       <Provider value={urqlClient}>
         {children}
       </Provider>

@@ -1,27 +1,20 @@
 "use client";
 
-import { SaleorAuthProvider, useAuthChange, useSaleorAuthClient } from "@saleor/auth-sdk/react";
+import { SaleorAuthProvider, useAuthChange } from "@saleor/auth-sdk/react";
 import { ApolloProvider } from "@apollo/client";
-import { useAuthenticatedApolloClient } from "@saleor/auth-sdk/react/apollo";
-
-const SaleorURL = "https://demo.saleor.io/graphql/";
+import { apolloClient, saleorApiUrl, saleorAuthClient } from "@/lib";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  const saleorAuth = useSaleorAuthClient({ saleorApiUrl: SaleorURL });
-
-  const { apolloClient, reset, refetch } = useAuthenticatedApolloClient({
-    uri: SaleorURL,
-    fetchWithAuth: saleorAuth.saleorAuthClient.fetchWithAuth,
-  });
-
   useAuthChange({
-    saleorApiUrl: SaleorURL,
-    onSignedOut: () => reset(),
-    onSignedIn: () => refetch(),
+    saleorApiUrl,
+    onSignedOut: () => apolloClient.resetStore(),
+    onSignedIn: () => { 
+      apolloClient.refetchQueries({ include: "all" });
+    }
   });
 
   return (
-    <SaleorAuthProvider {...saleorAuth}>
+    <SaleorAuthProvider client={saleorAuthClient}>
       <ApolloProvider client={apolloClient}>
         {children}
       </ApolloProvider>
