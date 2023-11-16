@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { UserCard } from "@/components/UserCard";
 import { createSaleorAuthClient } from "@saleor/auth-sdk";
-import { cookies } from "next/headers";
+import { getNextServerCookiesStorage } from "@saleor/auth-sdk/next/server";
 
 interface StorageRepository {
   getItem(key: string): string | null;
@@ -9,28 +9,8 @@ interface StorageRepository {
   setItem(key: string, value: string): void;
 }
 
-const nextServerCookiesStorage: StorageRepository = (() => {
-  const cache = new Map<string, string>();
-  return {
-    getItem(key) {
-      // We need to cache the value because cookies() returns stale data
-      // if cookies().set(…) is called in the same request.
-      return cache.get(key) ?? cookies().get(key)?.value ?? null;
-    },
-    removeItem(key) {
-      cache.delete(key);
-      cookies().delete(key);
-    },
-    setItem(key, value) {
-      try {
-        cache.set(key, value);
-        cookies().set(key, value, { httpOnly: true, sameSite: "lax" });
-      } catch {}
-    },
-  };
-})();
-
 const saleorApiUrl = "https://storefront1.saleor.cloud/graphql/";
+const nextServerCookiesStorage = getNextServerCookiesStorage();
 const saleorAuthClient = createSaleorAuthClient({
   saleorApiUrl,
   refreshTokenStorage: nextServerCookiesStorage,
