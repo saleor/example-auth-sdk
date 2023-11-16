@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { useSaleorAuthContext } from "@saleor/auth-sdk/react";
 import { gql, useQuery } from "urql";
 import LoginForm from "@/components/LoginForm";

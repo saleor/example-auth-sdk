@@ -1,5 +1,4 @@
 import { ExampleLink } from "@/components/ExampleLink";
-import Link from "next/link";
 
 export default function Home() {
   return (
@@ -8,6 +7,10 @@ export default function Home() {
       </div>
 
       <div className="mb-32 grid text-center lg:mb-0 lg:grid-cols-4 lg:text-left gap-2">
+        <ExampleLink href="/ssr" name="Next.js App Dir">
+          Saleor Auth example using Next.js 14 with App Dir
+        </ExampleLink>
+
         <ExampleLink href="/urql" name="urql">
           Saleor Auth example using urql as GraphQL client 
         </ExampleLink>
