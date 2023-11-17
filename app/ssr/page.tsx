@@ -4,12 +4,6 @@ import { createSaleorAuthClient } from "@saleor/auth-sdk";
 import { getNextServerCookiesStorage } from "@saleor/auth-sdk/next/server";
 import { saleorApiUrl } from "@/lib";
 
-interface StorageRepository {
-  getItem(key: string): string | null;
-  removeItem(key: string): void;
-  setItem(key: string, value: string): void;
-}
-
 const nextServerCookiesStorage = getNextServerCookiesStorage();
 const saleorAuthClient = createSaleorAuthClient({
   saleorApiUrl,
@@ -40,17 +34,14 @@ export default async function PageSSR() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ query: CurrentUserDocument }),
-      cache: 'no-store',
+      cache: "no-store",
     })
     .then((res) => res.json());
 
   return (
     <>
       <div className="rounded mb-8 w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-        <div>
-          This example shows how to use Saleor Auth SDK with Next.js 13+ (App
-          Dir).
-        </div>
+        <div>This example shows how to use Saleor Auth SDK with Next.js 13+ (App Dir).</div>
       </div>
       {data?.me ? (
         <>
@@ -85,12 +76,12 @@ export default async function PageSSR() {
                 throw new Error("Email and password are required");
               }
 
-              const response = await saleorAuthClient.signIn(
+              await saleorAuthClient.signIn(
                 {
                   email: email.toString(),
                   password: password.toString(),
                 },
-                { cache: "no-store" }
+                { cache: "no-store" },
               );
             }}
           >

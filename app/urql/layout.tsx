@@ -16,9 +16,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <SaleorAuthProvider client={saleorAuthClient}>
-      <Provider value={urqlClient}>
-        {children}
-      </Provider>
+      <Provider value={urqlClient}>{children}</Provider>
     </SaleorAuthProvider>
   );
 }

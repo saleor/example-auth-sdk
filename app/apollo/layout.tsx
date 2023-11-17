@@ -8,16 +8,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   useAuthChange({
     saleorApiUrl,
     onSignedOut: () => apolloClient.resetStore(),
-    onSignedIn: () => { 
+    onSignedIn: () => {
       apolloClient.refetchQueries({ include: "all" });
-    }
+    },
   });
 
   return (
     <SaleorAuthProvider client={saleorAuthClient}>
-      <ApolloProvider client={apolloClient}>
-        {children}
-      </ApolloProvider>
+      <ApolloProvider client={apolloClient}>{children}</ApolloProvider>
     </SaleorAuthProvider>
-  )
+  );
 }

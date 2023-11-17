@@ -19,8 +19,9 @@ export const apolloClient = new ApolloClient({
 });
 
 // urql Client Factory for revalidation during logout
-export const makeUrqlClient = () => createClient({
-  url: saleorApiUrl,
-  fetch: saleorAuthClient.fetchWithAuth,
-  exchanges: [cacheExchange, fetchExchange],
-})
+export const makeUrqlClient = () =>
+  createClient({
+    url: saleorApiUrl,
+    fetch: saleorAuthClient.fetchWithAuth,
+    exchanges: [cacheExchange, fetchExchange],
+  });

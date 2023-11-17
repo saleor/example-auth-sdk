@@ -1,19 +1,19 @@
-import { useSaleorAuthContext } from '@saleor/auth-sdk/react';
-import Image from 'next/image';
-import { FormEvent, useState } from 'react';
+import { useSaleorAuthContext } from "@saleor/auth-sdk/react";
+import Image from "next/image";
+import { FormEvent, useState } from "react";
 
 type FormValues = {
   email: string;
   password: string;
-}
+};
 
-const DefaultValues: FormValues = { email: '', password: '' }
+const DefaultValues: FormValues = { email: "", password: "" };
 
 export default function LoginForm() {
   const { signIn } = useSaleorAuthContext();
 
-  const [formValues, setFormValues] = useState<FormValues>(DefaultValues)
-  const [errors, setErrors] = useState<string[]>([]); 
+  const [formValues, setFormValues] = useState<FormValues>(DefaultValues);
+  const [errors, setErrors] = useState<string[]>([]);
 
   const submitHandler = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -24,14 +24,14 @@ export default function LoginForm() {
       setErrors(data.tokenCreate.errors.map((error) => error.message));
       setFormValues(DefaultValues);
     }
-  }
+  };
 
   const changeHandler = (event: FormEvent<HTMLInputElement>) => {
-    const { name, value} = event.currentTarget;
+    const { name, value } = event.currentTarget;
     setFormValues((prev) => ({ ...prev, [name]: value }));
 
-    if (errors.length > 0) setErrors([])
-  }
+    if (errors.length > 0) setErrors([]);
+  };
   return (
     <div className="w-full max-w-lg mx-auto">
       <div className="mb-10 flex justify-center">
@@ -71,5 +71,5 @@ export default function LoginForm() {
         ))}
       </div>
     </div>
-  )
+  );
 }

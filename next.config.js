@@ -1,10 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    remotePatterns: [{
-      hostname: '*.saleor.cloud'
-    }]
-  }
-}
+    remotePatterns: [
+      {
+        hostname: "*.saleor.cloud",
+      },
+    ],
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

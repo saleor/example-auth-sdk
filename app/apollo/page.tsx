@@ -8,19 +8,19 @@ import { UserCard } from "@/components/UserCard";
 import { Loader } from "@/components/Loader";
 
 const CurrentUserDocument = gql`
-query CurrentUser {
-  me {
-    id
-    email
-    firstName
-    lastName
-    avatar {
-      url
-      alt
+  query CurrentUser {
+    me {
+      id
+      email
+      firstName
+      lastName
+      avatar {
+        url
+        alt
+      }
     }
   }
-}
-` 
+`;
 
 export default function LoginPage() {
   const { signOut } = useSaleorAuthContext();
@@ -28,7 +28,7 @@ export default function LoginPage() {
   const { data, loading } = useQuery(CurrentUserDocument);
 
   if (loading) {
-    return <Loader />
+    return <Loader />;
   }
 
   return (
@@ -45,7 +45,11 @@ export default function LoginPage() {
       {data?.me ? (
         <>
           <UserCard {...data.me} />
-          <button onClick={() => signOut()} className="bg-slate-800 text-slate-200 hover:bg-slate-700 rounded py-2 px-4" type="button">
+          <button
+            onClick={() => signOut()}
+            className="bg-slate-800 text-slate-200 hover:bg-slate-700 rounded py-2 px-4"
+            type="button"
+          >
             Log Out
           </button>
         </>
@@ -54,4 +58,4 @@ export default function LoginPage() {
       )}
     </>
   );
-};
+}
