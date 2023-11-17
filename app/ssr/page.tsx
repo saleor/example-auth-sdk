@@ -2,6 +2,7 @@ import Image from "next/image";
 import { UserCard } from "@/components/UserCard";
 import { createSaleorAuthClient } from "@saleor/auth-sdk";
 import { getNextServerCookiesStorage } from "@saleor/auth-sdk/next/server";
+import { saleorApiUrl } from "@/lib";
 
 interface StorageRepository {
   getItem(key: string): string | null;
@@ -9,7 +10,6 @@ interface StorageRepository {
   setItem(key: string, value: string): void;
 }
 
-const saleorApiUrl = "https://storefront1.saleor.cloud/graphql/";
 const nextServerCookiesStorage = getNextServerCookiesStorage();
 const saleorAuthClient = createSaleorAuthClient({
   saleorApiUrl,
@@ -40,6 +40,7 @@ export default async function PageSSR() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ query: CurrentUserDocument }),
+      cache: 'no-store',
     })
     .then((res) => res.json());
 
@@ -84,11 +85,13 @@ export default async function PageSSR() {
                 throw new Error("Email and password are required");
               }
 
-              const response = await saleorAuthClient.signIn({
-                email: email.toString(),
-                password: password.toString(),
-              });
-              console.log(response);
+              const response = await saleorAuthClient.signIn(
+                {
+                  email: email.toString(),
+                  password: password.toString(),
+                },
+                { cache: "no-store" }
+              );
             }}
           >
             <div className="mb-2">

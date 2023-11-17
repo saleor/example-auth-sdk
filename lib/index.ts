@@ -2,7 +2,7 @@ import { cacheExchange, createClient, fetchExchange } from "urql";
 import { createSaleorAuthClient } from "@saleor/auth-sdk";
 import { ApolloClient, InMemoryCache, createHttpLink } from "@apollo/client";
 
-export const saleorApiUrl = "https://storefront1.saleor.io/graphql/";
+export const saleorApiUrl = "https://storefront1.saleor.cloud/graphql/";
 
 // Saleor Client
 export const saleorAuthClient = createSaleorAuthClient({ saleorApiUrl });
