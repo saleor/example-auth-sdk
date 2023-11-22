@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import Link from "next/link";
 
 export async function Nav() {
   return (
@@ -7,15 +7,11 @@ export async function Nav() {
         <div className="flex h-16 justify-between">
           <div className="flex px-2">
             <div className="flex items-center font-bold">
-              <Link
-                href="/"
-              >
-                Examples 
-              </Link>
+              <Link href="/">Examples</Link>
             </div>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
