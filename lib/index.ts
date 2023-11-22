@@ -10,7 +10,7 @@ export const saleorAuthClient = createSaleorAuthClient({ saleorApiUrl });
 // Apollo Client
 const httpLink = createHttpLink({
   uri: saleorApiUrl,
-  fetch: saleorAuthClient.fetchWithAuth,
+  fetch: (input, init) => saleorAuthClient.fetchWithAuth(input as NodeJS.fetch.RequestInfo, init),
 });
 
 export const apolloClient = new ApolloClient({
@@ -22,6 +22,6 @@ export const apolloClient = new ApolloClient({
 export const makeUrqlClient = () =>
   createClient({
     url: saleorApiUrl,
-    fetch: saleorAuthClient.fetchWithAuth,
+    fetch: (input, init) => saleorAuthClient.fetchWithAuth(input as NodeJS.fetch.RequestInfo, init),
     exchanges: [cacheExchange, fetchExchange],
   });
