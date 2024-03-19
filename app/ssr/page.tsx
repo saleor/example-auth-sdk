@@ -4,12 +4,14 @@ import { createSaleorAuthClient } from "@saleor/auth-sdk";
 import { getNextServerCookiesStorage } from "@saleor/auth-sdk/next/server";
 import { saleorApiUrl } from "@/lib";
 
-const nextServerCookiesStorage = getNextServerCookiesStorage();
-const saleorAuthClient = createSaleorAuthClient({
-  saleorApiUrl,
-  refreshTokenStorage: nextServerCookiesStorage,
-  accessTokenStorage: nextServerCookiesStorage,
-});
+const getServerAuthClient = () => {
+  const nextServerCookiesStorage = getNextServerCookiesStorage();
+  return createSaleorAuthClient({
+    saleorApiUrl,
+    refreshTokenStorage: nextServerCookiesStorage,
+    accessTokenStorage: nextServerCookiesStorage,
+  });
+};
 
 const CurrentUserDocument = /* graphql */ `
 query CurrentUser {
@@ -27,7 +29,7 @@ query CurrentUser {
 `;
 
 export default async function PageSSR() {
-  const { data } = await saleorAuthClient
+  const { data } = await getServerAuthClient()
     .fetchWithAuth(saleorApiUrl, {
       method: "POST",
       headers: {
@@ -50,7 +52,7 @@ export default async function PageSSR() {
             action={async () => {
               "use server";
 
-              saleorAuthClient.signOut();
+              getServerAuthClient().signOut();
             }}
           >
             <button
@@ -76,7 +78,7 @@ export default async function PageSSR() {
                 throw new Error("Email and password are required");
               }
 
-              await saleorAuthClient.signIn(
+              await getServerAuthClient().signIn(
                 {
                   email: email.toString(),
                   password: password.toString(),
